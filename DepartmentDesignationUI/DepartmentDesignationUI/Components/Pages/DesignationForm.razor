@@ -1,0 +1,49 @@
+﻿@page "/employee-form"
+@rendermode InteractiveServer
+
+<EditForm Model="@employeeModel" OnValidSubmit="SaveEmployeeForm">
+
+    
+    <div class="mb-3">
+        <label for="empname">EmployeeName:</label><br />
+        <InputText id="empname" class="form-control" @bind-Value="employeeModel.EmployeeName" />
+        
+    </div>
+
+    <div class="mb-3">
+        <label for="departmentSelect">Department</label><br />
+
+        <InputSelect id="departmentSelect" class="form-control" 
+                     TValue="int"
+                     Value="@employeeModel.DepartmentId"
+                     ValueExpression="() => employeeModel.DepartmentId"
+                     ValueChanged="OnDepartmentBasis"
+                     >
+            <option value="0">-- Select Department --</option>
+            @foreach (var dept in departments)
+            {
+                <option value="@dept.DepartmentId">@dept.DepartmentName</option>
+            }
+        </InputSelect>
+
+       
+    </div>
+
+    <div class="mb-3">
+        <label for="designationSelect">Designation:</label><br />
+
+        <InputSelect @bind-Value="employeeModel.DesignationId" class="form-control">
+            <option value="">-- Select Designation --</option>
+            @foreach (var desg in filteredDesignations)
+            {
+                <option value="@desg.DesignationId">@desg.DesignationName</option>
+            }
+        </InputSelect>
+
+        
+    </div>
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+</EditForm>
+
+
