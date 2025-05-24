@@ -1,0 +1,75 @@
+﻿@page "/employeedetails-form"
+@rendermode InteractiveServer
+
+<EditForm Model="@employeeDetails">
+
+    
+    <div class="mb-3">
+        <label for="employeename" class="form-label">EmployeeName:</label><br />
+        <InputText id="employeename" class="form-control" @bind-Value="employeeDetails.EmployeeName" />
+        
+    </div>
+
+    <div class="mb-3">
+        <label for="email">Email:</label><br />
+        <InputText id="email" class="form-control" @bind-Value="employeeDetails.Email" />
+
+    </div>
+
+    <div class="mb-3">
+        <label for="age">Age:</label><br />
+        <InputNumber id="age" class="form-control" @bind-Value="employeeDetails.Age" />
+
+    </div>
+
+    <div class="mb-3">
+        <label for="employeeTypeSelect">Employee Type Select</label><br />
+
+        <InputSelect id="employeeTypeSelect" class="form-control"
+                     TValue="int"
+                     Value="@employeeDetails.EmployeeType"
+                     ValueExpression="() => employeeDetails.EmployeeType"
+                     ValueChanged="OnEmployeeTypeChanged">
+            <option value="0">-- Select EmployeeType --</option>
+            @foreach (var type in employeeTypes)
+            {
+                <option value="@type.EmployeeTypeId">@type.EmployeeTypeName</option>
+            }
+        </InputSelect>
+
+
+    </div>
+
+    <div class="form-check">
+        <InputCheckbox id="wfhallowed" class="form-check-input" @bind-Value="employeeDetails.IsWFHAllowed" disabled="@(!IsWFHEnabled)" />
+        <label for="wfhallowed" class="form-check-label">WFH Allowed</label>
+    </div>
+
+    @if (IsDisplayContract)
+    {
+        <div class="mb-3">
+            <label for="contractDuration" class="form-label">Contract Duration:</label><br />
+            <InputText id="contractDuration" class="form-control" @bind-Value="employeeDetails.ContractDuration"/>
+
+        </div>
+        
+    }
+
+    
+    <div class="form-check">
+        <InputCheckbox id="companyLaptop" class="form-check-input" @bind-Value="employeeDetails.IsCompanyLaptopOrNot" @oninput="OnCompanyLaptopChanged" />
+        <label for="companyLaptop" class="form-check-label">Do you have company Laptop or not?</label>
+    </div>
+
+    <div>
+        <label for="laptopSerialNum" class="form-label">Laptop Serial Number:</label><br />
+        <InputText id="laptopSerialNum" class="form-control" @bind-Value="employeeDetails.LaptopSerialNumber" disabled="@(!IsLaptopSerial)" />
+    </div>
+        
+
+    
+    
+
+    <button class="btn btn-primary" type="submit">Submit</button>
+
+</EditForm>
