@@ -14,6 +14,8 @@ namespace DepartmentDesignationUI.Components.Pages
 
         public List<Designation> filteredDesignations = new List<Designation>();
 
+        private bool isDesignationEnabled = false;
+
         protected override void OnInitialized()
         {
             employeeModel.DepartmentId = 0;
@@ -54,6 +56,14 @@ namespace DepartmentDesignationUI.Components.Pages
                 .Where(d => d.DepartmentId == departmentId)
                 .ToList();
 
+        }
+
+        private string selectedGender;
+
+        private void OnGenderChanged(ChangeEventArgs e)
+        {
+            selectedGender = e.Value.ToString();
+            
         }
 
 
