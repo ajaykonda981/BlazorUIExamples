@@ -1,0 +1,7 @@
+﻿################################################################################
+# This .gitignore file was automatically created by Microsoft(R) Visual Studio.
+################################################################################
+
+/DepartmentDesignationUI/DepartmentDesignationUI/bin/Debug/net8.0
+/DepartmentDesignationUI/DepartmentDesignationUI/obj
+/DepartmentDesignationUI/.vs
