@@ -50,22 +50,20 @@ namespace DepartmentDesignationUI.Components.Pages
 
             }
         }
-
-        public void OnCompanyLaptopChanged()
+        public void OnCompanyLaptopChanged(ChangeEventArgs e)
         {
-            if (employeeDetails.IsCompanyLaptopOrNot == true)
+            bool isChecked = e?.Value is bool value && value;
+
+            if (isChecked == true)
+            {
+                IsLaptopSerial = true;
+            }
+            else
             {
                 IsLaptopSerial = false;
                 employeeDetails.LaptopSerialNumber = string.Empty;
             }
-            else
-            {
-                IsLaptopSerial = true;
-            }
-
-
         }
-
 
     }
 
