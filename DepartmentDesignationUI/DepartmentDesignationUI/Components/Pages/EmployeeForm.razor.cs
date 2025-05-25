@@ -32,6 +32,7 @@ namespace DepartmentDesignationUI.Components.Pages
         {
             employeeDetails.EmployeeType = employeeTypeId;
 
+
             if(employeeTypeId == 1) 
             {
                 IsWFHEnabled = true;
@@ -46,22 +47,22 @@ namespace DepartmentDesignationUI.Components.Pages
 
                 IsDisplayContract = true;
 
+
             }
         }
 
-        public void OnCompanyLaptopChanged(ChangeEventArgs e)
         {
-            bool isChecked = e?.Value is bool value && value;
-
-            if (isChecked == true)
-            {
-                IsLaptopSerial = true;
-            }
-            else
+            if (employeeDetails.IsCompanyLaptopOrNot == true)
             {
                 IsLaptopSerial = false;
                 employeeDetails.LaptopSerialNumber = string.Empty;
             }
+            else
+            {
+                IsLaptopSerial = true;
+            }
+
+
         }
 
 
