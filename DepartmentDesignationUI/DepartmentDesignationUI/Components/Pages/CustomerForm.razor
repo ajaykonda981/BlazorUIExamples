@@ -1,0 +1,122 @@
+﻿@page "/customer-form"
+@rendermode InteractiveServer
+
+<EditForm Model="@customerDetails">
+
+    
+    <div class="mb-3">
+        <label for="customername" class="form-label">CustomerName:</label><br />
+        <InputText id="customername" class="form-control" @bind-Value="customerDetails.CustomerName" />
+        
+    </div>
+
+    <div class="mb-3">
+        <label for="email">Email:</label><br />
+        <InputText id="email" class="form-control" @bind-Value="customerDetails.Email" />
+
+    </div>
+
+    <div class="mb-3">
+        <label for="mobileNumber">Mobile Number:</label><br />
+        <InputNumber id="mobileNumber" class="form-control" @bind-Value="customerDetails.MobileNumber" />
+
+    </div>
+
+    <div class="mb-3">
+        <label for="countrySelect">Country</label><br />
+
+        <InputSelect id="countrySelect" class="form-control"
+                     TValue="int"
+                     Value="@customerDetails.Country"
+                     ValueExpression="() => customerDetails.Country"
+                     ValueChanged="OnCountryChanged">
+            <option value="0">-- Select Country --</option>
+            @foreach (var country in countries)
+            {
+                <option value="@country.CountryId">@country.CountryName</option>
+            }
+        </InputSelect>
+
+
+    </div>
+
+    <div class="mb-3">
+        <label for="stateSelect">State/Province:</label><br />
+
+        <InputSelect @bind-Value="customerDetails.State" class="form-control" disabled="@(!IsStateVisible)">
+            <option value="">-- Select State/Province --</option>
+            @foreach (var state in filteredStates)
+            {
+                <option value="@state.StateId">@state.StateName</option>
+            }
+        </InputSelect>
+
+
+    </div>
+
+    <div class="form-check">
+        <InputCheckbox id="isPreferredCustomer" class="form-check-input" @bind-Value="customerDetails.IsPreferredCustomer" @oninput="OnCustomerChanged" />
+        <label for="isPreferredCustomer" class="form-check-label">Is Preferred Customer?</label><br />
+    </div>
+    <div>
+        <label>Preferred Communication Mode:</label><br />
+        <InputRadioGroup Value="customerDetails.CommunicationMode" ValueChanged="OnCommunicationModeChanged" TValue="string" ValueExpression="@(() => customerDetails.CommunicationMode)">
+            
+            @foreach (var mode in communicationModes)
+            {
+                <InputRadio Value="@mode" disabled="@(!IsCommunicationModeActive)"  /> @mode
+            }
+        </InputRadioGroup>
+
+
+    </div>
+
+    <div class="form-check">
+        <InputCheckbox id="communicationPreferences" class="form-check-input" @bind-Value="customerDetails.CommunicationPreferences" disabled="@(!IsCommunicationPreferenceEnabled)" />
+        <label for="communicationPreferences" class="form-check-label">Communication Preferences </label><br />
+    </div>
+
+    <div class="form-check">
+        <InputCheckbox id="needCreditFacility" class="form-check-input" @bind-Value="customerDetails.IsCreditNeeded" @oninput="OnCreditChanged" />
+        <label for="needCreditFacility" class="form-check-label">Do yo need Credit Facility?</label><br />
+    </div>
+
+    <div class="mb-3">
+        <label for="creditLimit" class="form-label">CreditLimit:</label><br />
+        <InputText id="creditLimit" class="form-control" @bind-Value="customerDetails.CreditLimit" disabled="@(!IsCreditLimit)" />
+
+    </div>
+
+    <div class="mb-3">
+        <label for="customerTypeSelect">Customer Type</label><br />
+
+        <InputSelect id="customerTypeSelect" class="form-control"
+                     TValue="int"
+                     Value="@customerDetails.CustomerType"
+                     ValueExpression="() => customerDetails.CustomerType"
+                     ValueChanged="OnCustomerChanged">
+            <option value="0">-- Select Customer Type --</option>
+            @foreach (var customer in customers)
+            {
+                <option value="@customer.CustTypeId">@customer.CustTypeName</option>
+            }
+        </InputSelect>
+
+
+    </div>
+
+    <div class="mb-3">
+        <label for="gstnumber" class="form-label">GST Number:</label><br />
+        <InputText id="gstnumber" class="form-control" @bind-Value="customerDetails.GSTNumber" disabled="@(!IsGSTVisible)" />
+
+    </div>
+
+    <div class="form-check">
+        <InputCheckbox id="terms&conditions" class="form-check-input" @bind-Value="customerDetails.TermsConditions" @oninput="OnTermsChanged" />
+        <label for="terms&conditions" class="form-check-label">Terms & Conditions Accepted</label><br />
+    </div>
+
+
+    <button class="btn btn-primary" type="submit" disabled="@(!IsSubmitBtnEnabled)">Submit</button>
+
+</EditForm>
