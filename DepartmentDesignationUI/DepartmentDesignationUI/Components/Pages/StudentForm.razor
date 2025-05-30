@@ -1,0 +1,216 @@
+﻿@page "/student-form"
+@rendermode InteractiveServer
+
+<EditForm Model="@studentDetails">
+    
+
+    
+    <div class="mb-3">
+        <label for="studentname" class="form-label">StudentName:</label><br />
+        <InputText id="studentname" class="form-control" @bind-Value="studentDetails.StudentName" @oninput="OnStudentNameChanged" />
+        
+    </div>
+
+    <div>
+    <label>Date of Birth:</label>
+        <InputDate id="dob"
+                   Value="studentDetails.DOB"
+                   ValueChanged="OnDOBChanged"
+                   ValueExpression="(() => studentDetails.DOB)"
+                   TValue="DateOnly"
+                   disabled="@(!IsDOBEnabled)" />
+
+                                                                                           
+    </div>
+
+
+    @if (IsGenderVisible)
+    {
+    <div>
+        <label>Gender:</label><br />
+            <InputRadioGroup Value="studentDetails.Gender" ValueChanged="OnGenderChanged"
+                             TValue="string" ValueExpression="@(() => studentDetails.Gender)"
+                             disabled="@(!IsGenderVisible)">
+            @foreach (var gender in genders)
+            {
+                <InputRadio Value="@gender" /> @gender
+            }
+        </InputRadioGroup>
+
+
+    </div>
+    }
+
+    <div class="mb-3">
+        <label for="email">Email:</label><br />
+        <InputText id="email" class="form-control" @bind-Value="studentDetails.Email" @oninput="OnEmailChanged" disabled="@(!IsEmailEnabed)" />
+      </div>  
+
+    @if (IsPwdVisible)
+    {
+        <div class="mb-3">
+            <label for="password">Password:</label><br />
+            <InputText id="password" class="form-control" @bind-Value="studentDetails.Password" />
+
+        </div>
+    }
+
+    <div class="mb-3">
+        <label for="phoneNumber" class="form-label">Phone Number:</label><br />
+        <InputText id="phoneNumber" class="form-control"
+                   Value="@studentDetails.PhoneNumber"
+                   ValueChanged="OnPhoneNumberChanged"
+                   ValueExpression="(() => studentDetails.PhoneNumber)"
+                   TValue="string" />
+
+    </div>
+    @if (IsAddressVisible)
+    {
+        <div class="mb-3">
+            <label for="address" class="form-label">Address:</label><br />
+            <InputTextArea id="address" class="form-control" Value="@studentDetails.Address"
+                           ValueChanged="OnAddressChanged"
+                           ValueExpression="(() => studentDetails.Address)"
+                           TValue="string" />
+
+        </div>
+    }
+
+    <div class="mb-3">
+        <label for="stateSelect">Country:</label><br />
+
+        <InputSelect class="form-control" Value="@studentDetails.Country"
+                           ValueChanged="OnCountryChanged"
+                           ValueExpression="(() => studentDetails.Country)"
+                           TValue="int"disabled="@(!IsCountryEnable)">
+            <option value="0">-- Select Country --</option>
+            @foreach (var country in countries)
+            {
+                <option value="@country.CountryId">@country.CountryName</option>
+            }
+        </InputSelect>
+    </div>
+
+    @if(IsStateVisible)
+    {
+    <div class="mb-3">
+        <label for="stateSelect">State:</label><br />
+
+        <InputSelect class="form-control" Value="@studentDetails.State"
+                     ValueChanged="OnStateChanged"
+                     ValueExpression="(() => studentDetails.State)"
+                     TValue="string">>
+            <option value="">-- Select State --</option>
+            @foreach (var state in states)
+            {
+                <option value="@state.StateId">@state.StateName</option>
+            }
+        </InputSelect>
+    </div>
+    }
+
+    <div class="mb-3">
+        <label for="cityselect">City:</label><br />
+
+        <InputSelect class="form-control" @bind-Value="studentDetails.City" disabled="@(!IsCityEnabled)">
+            <option value="">-- select City --</option>
+            @foreach (var city in cities)
+            {
+                <option value="@city.CityId">@city.CityName</option>
+            }
+        </InputSelect>
+    </div>
+
+
+    <div>
+        <label>Languages Known:</label><br />
+        @foreach (var language in languages)
+        {
+            <div class="form-check">
+                <InputCheckbox class="form-check-input"
+                               @bind-Value="language.IsSelected"
+                               @oninput="(e) => OnLanguageChanged(language, (bool)e.Value)" />
+                <label class="form-check-label">@language.Name</label><br />
+            </div>
+        }
+    </div>
+
+    <div class="mb-3">
+        <label for="courseselect">Courses:</label><br />
+
+        <InputSelect class="form-control" Value="@studentDetails.Course"
+                     ValueChanged="OnCourseChanged"
+                     ValueExpression="(() => studentDetails.Course)"
+                     TValue="string" disabled="@(!IsCourseEnabled)">
+            <option value="">-- select Course --</option>
+            @foreach (var course in courses)
+            {
+                <option value="@course.CourseId">@course.CourseName</option>
+            }
+        </InputSelect>
+    </div>
+
+    @if (IsSubjectVisible)
+    {
+    <div>
+        <label>Subjects:</label><br />
+        @foreach (var subject in subjects)
+        {
+            <div class="form-check">
+                <InputCheckbox class="form-check-input"
+                               @bind-Value="subject.IsSubjectSelected"
+                                   @oninput="(e) => OnSubjectChanged(subject, (bool)e.Value)" />
+                <label class="form-check-label">@subject.SubjectName</label><br />
+            </div>
+        }
+    </div>
+    }
+    
+    <div>
+        <label>Hobbies:</label><br />
+        @foreach (var hobby in hobbies)
+        {
+            <div class="form-check">
+                <InputCheckbox class="form-check-input"
+                               @bind-Value="hobby.IsHobbySelected"
+                               @oninput="(e => OnHobbyChanged(hobby, (bool)e.Value))"
+                               disabled="@(!IsHobbyEnabled)" />
+                <label class="form-check-label">@hobby.HobbyName</label><br />
+            </div>
+        }
+    </div>
+
+    @if(IsSportsVisible)
+    {
+    <div class="mb-3">
+        <label for="sportsselect">Sports:</label><br />
+
+        <InputSelect class="form-control"  Value="@studentDetails.Sports"
+                     ValueChanged="OnSportsChanged"
+                     ValueExpression="(() => studentDetails.Sports)"
+                     TValue="string">
+            <option value="">-- select Sports --</option>
+            @foreach (var sport in sports)
+            {
+                <option value="@sport.SportId">@sport.SportName</option>
+            }
+        </InputSelect>
+    </div>
+    }
+
+    <div>
+        <label>Registration Date:</label>
+        <InputDate id="registration"
+                   @bind-Value="studentDetails.RegistrationDate"
+                   disabled="@(!IsRegistrationDateEnabled)" />
+    </div>
+
+    <div class="mb-3">
+        <InputCheckbox @bind-Value="studentDetails.TermsConditions" @oninput="OnTermsChanged" />
+        <label for="terms&conditions" class="form-check-label">Terms & Conditions Accepted</label><br />
+    </div>
+
+
+    <button class="btn btn-primary" type="submit" disabled="@(!IsSubmitBtnEnabled)">Submit</button>
+
+</EditForm>
